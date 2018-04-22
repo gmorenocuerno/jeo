@@ -13,22 +13,24 @@ $user = utf8_decode(isset($_GET['user']) ? $_GET['user'] : '');
 $json = "no has seteado nada.";
 
 if(strtoupper($accion) =='C'){ //VERIFICACION SI LA ACCION ES CONSULTA
-	if(empty($id)) $id="A.id=A.id";
-	else $id="A.id='$id'";
-	if(isset($desc)) $desc="AND A.descripcion LIKE '%$desc%'";
+	if(!empty($id)) $id="A.id='$id'";
+	else $id="1=1";
+	if(!empty($desc)) $desc="AND A.descripcion LIKE '%$desc%'";
 	else $desc="";
+	if(!empty($estado)) $estado="AND A.estado='$estado'";
+	else $estado="";
 	
 	$sql = "
 	SELECT A.id, A.descripcion, A.estado
 	FROM $bd.$tabla A
-	WHERE $id AND A.estado='A' $desc";
-	
+	WHERE $id $desc $estado ";
+
 	$result = $conn->query($sql);
 	
 	if (!empty($result))
 		if($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
-				$results[] = array("id" => $row["id"], 'descripcion' => $row["descripcion"], 'estado'=>$row["estado"]);
+				$results[] = array("id" => $row["id"], 'descripcion' => utf8_decode($row["descripcion"]), 'estado'=>$row["estado"]);
 				$json = array("status"=>1, "info"=>$results);
 			}
 		} else {

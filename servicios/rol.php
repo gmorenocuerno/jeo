@@ -2,7 +2,7 @@
 include_once('../config.php'); 
 
 $bd = "jeo";
-$tabla = "ctg_tipo_contratacion";
+$tabla = "sec_rol";
 
 $accion = isset($_GET['accion']) ? $_GET['accion'] : '';
 $id = isset($_GET['id']) ? $_GET['id'] : '';
